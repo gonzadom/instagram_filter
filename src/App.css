@@ -10,12 +10,46 @@
 .right {
   flex: 1;
   position: relative;
+
+  display: flex;
+  align-items: center;     /* centro vertical */
+  justify-content: center; /* centro horizontal */
 }
 
 /* derecha */
 .right {
   padding: 20px;
   overflow-y: auto;
+}
+
+.list-container {
+  max-height: 20px;
+  overflow-y: auto;
+}
+
+/* Chrome / Edge / Safari */
+.list-container::-webkit-scrollbar {
+  width: 12px;              /* 🔑 más grande */
+}
+
+.list-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+}
+
+.list-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 6px;
+}
+
+.list-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Firefox */
+.list-container {
+  scrollbar-width: auto; /* en vez de thin */
+  scrollbar-color: rgba(0, 0, 0, 0.35) rgba(0, 0, 0, 0.05);
 }
 
 /* caja flotante */
@@ -25,16 +59,101 @@
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: 320px;
+  /* 🔑 que se adapte al contenido */
+  width: fit-content;
+  max-width: 90vw;
+
   padding: 20px;
 
   background: white;
   border-radius: 12px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.floating-box-right {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* 🔑 tamaño del box */
+  min-width: 420px;
+  min-height: 300px;
+  max-width: 90vw;
+  max-height: 80vh;
+
+  /* más aire alrededor */
+  padding: 32px 40px;
+
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.floating-box-right {
+  position: fixed;
+  top: 50%;
+  right: 32px;
+  transform: translateY(-50%);
+
+  width: 420px;
+  max-height: 80vh;
+  padding: 24px;
+
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  flex-direction: column; /* apila verticalmente */
+  align-items: center;    /* centra horizontalmente */
+  justify-content: center; /* centra verticalmente si sobra espacio */
+  gap: 16px;              /* separación entre elementos */
+}
+
+/* Limitar altura de la lista y hacer scroll */
+.floating-box-right .ant-list {
+  max-height: 260px;
+  overflow-y: auto;
+  width: 100%; /* que ocupe todo el ancho del box */
+}
+
+.floating-box-right {
+  position: fixed;
+  top: 50%;
+  right: 32px;
+  transform: translateY(-50%);
+
+  width: 420px;
+  padding: 20px;
+
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* 🔑 limita la altura de la lista */
+.floating-box-right .ant-list {
+  max-height: 260px;      /* ← bajá o subí este valor */
+  overflow-y: auto;
+}
+
+/* opcional: scrollbar más sutil */
+.floating-box-right .ant-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.floating-box-right .ant-list::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 4px;
 }
 
 /* botones de abajo */
