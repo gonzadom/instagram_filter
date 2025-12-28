@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Header from './components/Header'
 import './App.css'
+import JSZip from "jszip";
 
 import { InboxOutlined, RightOutlined, DeleteOutlined, DownloadOutlined } from '@ant-design/icons';
 import { Button, Space } from 'antd';
@@ -60,14 +61,14 @@ function App() {
   };
 
   const props: UploadProps = {
-    multiple: true,
-    accept: ".json",
+    multiple: false,
+    accept: ".zip",
     fileList,
 
     // ⛔ no POST
     beforeUpload: (file) => {
-      if (file.type !== "application/json") {
-        message.error("Solo archivos JSON");
+      if (file.type !== "application/zip") {
+        message.error("Solo archivos ZIP");
         return Upload.LIST_IGNORE;
       }
 
@@ -104,40 +105,51 @@ function App() {
   };
 
   const procesar = async () => {
+  if (fileList.length !== 1) {
+    message.error("Subí el ZIP exportado de Instagram");
+    return;
+  }
 
-    if (fileList.length === 1) {
-      if (fileList[0].name !== "followers.json") {
-        message.warning("Falta el JSON de followers");
-        return;
-      } else {
-        message.warning("Falta el JSON de following");
-        return;
+  try {
+    const zipFile = fileList[0].originFileObj as File;
+    const zip = await JSZip.loadAsync(zipFile);
+
+    let followersJSON: any = null;
+    let followingJSON: any = null;
+
+    // 🔍 recorrer TODAS las carpetas internas
+    for (const path in zip.files) {
+      const file = zip.files[path];
+
+      if (file.dir) continue;
+
+      if (
+        path.includes("followers_and_following") &&
+        path.endsWith("followers_1.json")
+      ) {
+        const text = await file.async("string");
+        followersJSON = JSON.parse(text);
+      }
+
+      if (
+        path.includes("followers_and_following") &&
+        path.endsWith("following.json")
+      ) {
+        const text = await file.async("string");
+        followingJSON = JSON.parse(text);
       }
     }
 
-    if (fileList.length !== 2) {
-      message.error("Tenés que cargar exactamente 2 JSON");
+    if (!followersJSON || !followingJSON) {
+      message.error(
+        "No se encontraron followers_1.json y following.json dentro del ZIP"
+      );
       return;
     }
 
-    try {
-    // leer ambos archivos
-    const jsonA = await leerJSON(fileList[0].originFileObj as File);
-    const jsonB = await leerJSON(fileList[1].originFileObj as File);
-
-    // detectar cuál es cuál
-    let seguidoresJSON, seguidosJSON;
-
-    if (jsonA.relationships_following) {
-      seguidosJSON = jsonA;
-      seguidoresJSON = jsonB;
-    } else {
-      seguidosJSON = jsonB;
-      seguidoresJSON = jsonA;
-    }
-
-    const seguidores = jsonALista(seguidoresJSON, false);
-    const seguidos = jsonALista(seguidosJSON, true);
+    // 👇 MISMA LÓGICA QUE PYTHON
+    const seguidores = jsonALista(followersJSON, false);
+    const seguidos = jsonALista(followingJSON, true);
 
     const seguidosNoSiguen: string[] = [];
     for (const seguido of seguidos) {
@@ -148,9 +160,11 @@ function App() {
 
     setData(seguidosNoSiguen);
 
-    message.success(`Listo ✔ ${seguidosNoSiguen.length} personas no te siguen`);
+    message.success(
+      `Listo ✔ ${seguidosNoSiguen.length} personas no te siguen`
+    );
   } catch (e) {
-    message.error("Error procesando los JSON, intenta de nuevo");
+    message.error("Error procesando el ZIP");
   }
 };
 
