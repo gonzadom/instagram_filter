@@ -35,6 +35,25 @@ function App() {
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
+  const jsonALista = (json: any, esJsonSeguidos: boolean): string[] => {
+  const lista: string[] = [];
+
+  if (esJsonSeguidos) {
+    // following.json
+    const following = json.relationships_following;
+    for (const elemento of following) {
+      lista.push(elemento.title);
+    }
+  } else {
+    // followers.json
+    for (const elemento of json) {
+      lista.push(elemento.string_list_data[0].value);
+    }
+  }
+
+    return lista;
+  };
+
   const downloadTxtFile = () => {
     if (data.length === 0) {
       message.error("No hay datos para descargar");
@@ -120,17 +139,38 @@ function App() {
     }
 
     try {
-      const json1 = await leerJSON(fileList[0].originFileObj as File);
-      const json2 = await leerJSON(fileList[1].originFileObj as File);
+    // leer ambos archivos
+    const jsonA = await leerJSON(fileList[0].originFileObj as File);
+    const jsonB = await leerJSON(fileList[1].originFileObj as File);
 
-      console.log("JSON 1:", json1);
-      console.log("JSON 2:", json2);
+    // detectar cuál es cuál
+    let seguidoresJSON, seguidosJSON;
 
-      message.success("JSONs cargados correctamente");
-    } catch (e) {
-      message.error("Error leyendo los JSON");
+    if (jsonA.relationships_following) {
+      seguidosJSON = jsonA;
+      seguidoresJSON = jsonB;
+    } else {
+      seguidosJSON = jsonB;
+      seguidoresJSON = jsonA;
     }
-  };
+
+    const seguidores = jsonALista(seguidoresJSON, false);
+    const seguidos = jsonALista(seguidosJSON, true);
+
+    const seguidosNoSiguen: string[] = [];
+    for (const seguido of seguidos) {
+      if (!seguidores.includes(seguido)) {
+        seguidosNoSiguen.push(seguido);
+      }
+    }
+
+    setData(seguidosNoSiguen);
+
+    message.success(`Listo ✔ ${seguidosNoSiguen.length} personas no te siguen`);
+  } catch (e) {
+    message.error("Error procesando los JSON, intenta de nuevo");
+  }
+};
 
   return (
     <>
