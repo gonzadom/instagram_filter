@@ -47,6 +47,11 @@ export default function Header() {
 
           <li>
             Dentro vas a encontrar una carpeta llamada{" "}
+            <strong>connections</strong>.
+          </li>
+
+          <li>
+            Dentro de connections vas a encontrar una carpeta llamada{" "}
             <strong>followers_and_following</strong>.
           </li>
 
