@@ -36,15 +36,68 @@ export default function Header() {
         </p>
         </Panel>
         <Panel header="¿Como se usa?" key="2">
-        <p>
-            Primero debes cargar los archivos JSON exportados desde Instagram que contienen la lista de tus seguidores y seguidos. Luego, la aplicación procesará estos archivos y te mostrará un listado de las personas que seguis pero que no te siguen de vuelta.
-            Si lo deseas, podés descargar este listado en un archivo de texto para futuras referencias.
-        </p>
+        <ul>
+          <li>
+            Debés cargar los archivos <strong>JSON</strong> exportados desde Instagram.
+          </li>
+
+          <li>
+            Tomá el archivo <strong>ZIP</strong> que descargaste y <strong>descomprimilo</strong>.
+          </li>
+
+          <li>
+            Dentro vas a encontrar una carpeta llamada{" "}
+            <strong>followers_and_following</strong>.
+          </li>
+
+          <li>
+            Dentro de esa carpeta vas a encontrar dos archivos:
+            <ul>
+              <li>
+                <strong>followers_1.json</strong>
+              </li>
+              <li>
+                <strong>following.json</strong>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            Cargá ambos archivos en la página para procesarlos.
+          </li>
+        </ul>
+
         </Panel>
         <Panel header="¿Como generar los json?" key="3">
-        <p>
-            Sí, encontrarás guías rápidas y videos de ayuda dentro de la sección “Ayuda” o “Tutorial” en la app.
-        </p>
+        <ul>
+          <li>
+            Andá a tu perfil de Instagram y abrí el menú de{" "}
+            <strong>Configuración</strong>.
+          </li>
+
+          <li>
+            Seleccioná <strong>Centro de cuentas</strong> y luego{" "}
+            <strong>Tu información y permisos</strong>. Allí elegí{" "}
+            <strong>Exportar tu información</strong>.
+          </li>
+
+          <li>
+            En la sección tocá el botón <strong>Crear exportación</strong> y luego{" "}
+            <strong>Exportar al dispositivo</strong>.
+          </li>
+
+          <li>
+            Elegí formato <strong>JSON</strong>. En intervalo de fechas seleccioná{" "}
+            <strong>Desde el inicio</strong>. En <strong>Personalizar información</strong>{" "}
+            desmarcá todo y elegí solo <strong>Seguidores</strong> y{" "}
+            <strong>Seguidos</strong>.
+          </li>
+
+          <li>
+            Tocá <strong>Iniciar exportación</strong> y esperá a que Instagram genere los
+            archivos. Te va a notificar por mail.
+          </li>
+        </ul>
         </Panel>
         <Panel header="¿Puedo usar la app en mi celular?" key="4">
         <p>
