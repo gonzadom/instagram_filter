@@ -1,0 +1,45 @@
+/* contenedor principal */
+.layout {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 64px); /* si tenés header */
+}
+
+/* mitades */
+.left,
+.right {
+  flex: 1;
+  position: relative;
+}
+
+/* derecha */
+.right {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* caja flotante */
+.floating-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 320px;
+  padding: 20px;
+
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* botones de abajo */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
