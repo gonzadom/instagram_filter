@@ -9,7 +9,7 @@ import { message, Upload, List, Typography } from 'antd';
 
 const { Dragger } = Upload;
 
-const { Paragraph, Text, Title } = Typography;
+const { Paragraph, Title } = Typography;
 
 function App() {
 
